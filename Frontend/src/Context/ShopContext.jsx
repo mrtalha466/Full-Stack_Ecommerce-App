@@ -45,12 +45,22 @@ const ShopContextProvider = (props) => {
     if (token) {
       try {
 
-        await axios.post(`${backendUrl}/api/cart/add`, { itemId, size }, { headers: { token } })
+        const response = await axios.post(`${backendUrl}/api/cart/add`, { itemId, size }, { headers: { token } })
+
+        if (response.data.success) {
+          toast.success("Item added to cart");
+          // navigate("/cart"); 
+        } else {
+          toast.error(response.data.message || "Failed to add to cart");
+        }
 
       } catch (error) {
         console.log(error)
         toast.error(error.message)
       }
+    } else {
+      toast.success("Item added to cart");
+      // navigate("/cart");
     }
 
   }

@@ -3,9 +3,10 @@ import { ShopContext } from "../Context/ShopContext";
 import Title from "../Components/Title";
 import { assets } from "../assets/assets";
 import CartTotal from "../Components/CartTotal";
+import { toast } from "react-toastify";
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity, navigate } =
+  const { products, currency, cartItems, updateQuantity, navigate ,token} =
     useContext(ShopContext);
 
   const [cartData, setCartData] = useState([]);
@@ -31,6 +32,16 @@ const Cart = () => {
 
 
   }, [cartItems, products]);
+
+   // In the button onClick:
+  const handleCheckout = () => {
+    if (!token) {
+      toast.info("Please login first to proceed to checkout");
+      navigate("/login");
+      return;
+    }
+    navigate("/place-order");
+  };
 
   return (
     <div className="border-t pt-14">
@@ -99,7 +110,7 @@ const Cart = () => {
         <div className="w-full sm:w-[450px]">
           <CartTotal />
           <div className="w-full text-end">
-            <button onClick={() => navigate('/place-order')} className="bg-black text-white txt-sm my-8 px-8 py-3">PROCEED TO CHECKOUT</button>
+            <button onClick={handleCheckout} className="bg-black text-white txt-sm my-8 px-8 py-3">PROCEED TO CHECKOUT</button>
           </div>
         </div>
       </div>
